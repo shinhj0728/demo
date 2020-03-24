@@ -1,0 +1,54 @@
+{
+  $schema: https://vega.github.io/schema/vega-lite/v2.json
+  data: {
+    url: {
+      %context%: true
+      %timefield%: timestamp
+      index: kibana_sample_data_logs
+      body: {
+        size: 0
+        aggs: {
+          table: {
+            composite: {
+              size: 10000,
+              sources: [
+                {
+                  time: {
+                    date_histogram: {
+                      field: "timestamp"
+                      interval: {%autointerval%: 500}
+                    }
+                  }
+                }
+                {
+                  ext: {
+                    terms: {field: "extension.keyword"}
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+    format: {property: "aggregations.table.buckets"}
+  }
+  transform: [
+    {calculate: "datum.key.time", as: "time"}
+    {calculate: "datum.key.ext", as: "ext"}
+  ]
+  mark: area
+  encoding: {
+    x: {
+      field: time
+      type: temporal
+      axis: {title: null}
+    }
+    y: {
+      axis: {title: "Document count"}
+      field: doc_count
+      type: quantitative
+    }
+    color: {field: "ext", type: "nominal"}
+  }
+}
