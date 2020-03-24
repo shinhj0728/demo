@@ -1,0 +1,64 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  
+  "data": {
+    "url": {
+      %context%: true
+      %timefield%: timestamp
+      index: kibana_sample_data_logs
+      
+      body: {
+        "size": 10000
+        "_source": ["timestamp", "bytes", "extension"]
+      }
+    }
+    format: { property: "hits.hits" }
+  },
+  
+  transform: [
+    // Since @timestamp is a string value, we need to convert it to a unix timestamp
+    // so that Vega can work on it properly.
+    {
+      // Convert _source.@timestamp field to a date
+      calculate: "toDate(datum._source['timestamp'])"
+      // Store the result in a field named "time" in the object
+      as: "time"
+    }
+  ],
+  
+  "mark": "point",
+  
+  encoding: {
+    x: {
+      // Draw the time field on the x-axis in temporal mode (i.e. as a time axis)
+      field: time
+      type: temporal
+      // Hide the axis label for the x-axis
+      axis: { title: false }
+    }
+    y: {
+      // Draw the bytes of each document on the y-axis
+      field: _source.bytes
+      // Mark the y-axis as quantitative
+      type: quantitative
+      // Specify the label for this axis
+      axis: { title: "Transferred bytes" }
+    }
+    color: {
+      // Make the color of each point depend on the _source.extension field
+      field: _source.extension
+      // Treat different values as completely unrelated values to each other.
+      // You could switch this to quantitative if you have a numeric field and
+      // want to create a color scale from one color to another depending on that
+      // field's value.
+      type: nominal
+      // Rename the legend title so it won't just state: "_source.extension"
+      legend: { title: 'File type' }
+    }
+    shape: {
+      // Also make the shape of each point dependent on the extension.
+      field: _source.extension
+      type: nominal
+    }
+  }
+}
