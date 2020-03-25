@@ -7,3 +7,13 @@ POST _sql?format=txt
     ORDER BY COUNT(*) DESC
     """
 }
+
+
+https://www.elastic.co/guide/en/elasticsearch/reference/current/sql-functions-datetime.html#sql-functions-datetime-year
+
+SELECT YEAR(CAST('2018-02-19T10:23:27Z' AS TIMESTAMP)) AS year;
+
+     year
+---------------
+2018
+
