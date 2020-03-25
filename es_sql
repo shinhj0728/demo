@@ -39,6 +39,31 @@ POST test_log/_doc
 }
 
 
+POST /_aliases
+{
+  "actions": [
+    {
+      "add": {
+        "index": "test_log",
+        "alias": "test"
+      }
+    }
+  ]
+}
+
+POST /_aliases
+{
+  "actions": [
+    {
+      "add": {
+        "index": "test_user",
+        "alias": "test"
+      }
+    }
+  ]
+}
+
+
 
 POST _xpack/sql?format=txt
 {
