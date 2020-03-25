@@ -98,8 +98,20 @@ POST _xpack/sql?format=txt
 {
   "query":"""
   SELECT id, SUM(time) as total_view_time, AVG(music) as music 
-  FROM "test" 
+  FROM "test_*" 
   GROUP BY "id"
   """
 }
 
+POST _sql?format=txt
+{
+  "query": """
+    SELECT id, total_view_time
+    FROM (
+      SELECT id, SUM(time) as total_view_time, AVG(music) as music 
+      FROM "test_*" 
+      GROUP BY "id"
+      ) 
+    WHERE music>8
+  """
+}
