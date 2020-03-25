@@ -1,0 +1,61 @@
+DELETE test_*
+
+POST test_user/_doc
+{
+  "id" : 1,
+  "music" : 8.3
+}
+POST test_user/_doc
+{
+  "id" : 2,
+  "music" : 5.3
+}
+POST test_user/_doc
+{
+  "id" : 3,
+  "music" : 9.3
+}
+
+POST test_log/_doc
+{
+  "id" : 1,
+  "time" : 2.1
+}
+POST test_log/_doc
+{
+  "id" : 1,
+  "time" :3.3
+}
+POST test_log/_doc
+{
+  "id" : 3,
+  "time" : 9
+}
+
+POST test_log/_doc
+{
+  "id" : 2,
+  "time" : 8.2
+}
+
+
+
+POST _xpack/sql?format=txt
+{
+  "query":"""
+  SELECT *
+  FROM test_log
+  """
+}
+
+
+POST _xpack/sql?format=txt
+{
+  "query":"""
+  SELECT *
+  FROM test
+  WHERE music>8
+  LIMIT 5
+  """
+}
+
