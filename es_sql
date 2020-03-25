@@ -84,3 +84,22 @@ POST _xpack/sql?format=txt
   """
 }
 
+
+POST _xpack/sql?format=txt
+{
+  "query":"""
+  SELECT * 
+  FROM test
+  """
+}
+
+
+POST _xpack/sql?format=txt
+{
+  "query":"""
+  SELECT id, SUM(time) as total_view_time, AVG(music) as music 
+  FROM "test" 
+  GROUP BY "id"
+  """
+}
+
