@@ -1,3 +1,25 @@
+DELETE image
+
+POST /image/_doc
+{
+  "id": 1,
+  "url":"https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt9a6279ac82c4aac5/5c11ebcf5b046c520d3f7506/logo-elastic-stack-lt.svg"
+}
+
+POST /image/_doc
+{
+  "id": 2,
+  "url":"https://image.shutterstock.com/z/stock-vector-coronavirus-pandemic-medical-infographics-horizontal-background-with-infected-covid-cells-or-1679579902.jpg"
+}
+
+
+
+
+
+
+
+
+
 filters
 | essql query="SELECT id, url FROM image"
 | markdown 
