@@ -3,10 +3,9 @@ filters
   query="SELECT customer_gender, COUNT(*) as count
         FROM kibana_sample_data_ecommerce
         GROUP BY customer_gender"
-| mapColumn customer_gender fn={if {getCell customer_gender | eq "MALE"} then={getCell customer_gender} else="Other"}
-| ply by=customer_gender fn={math 'sum(count)' | as count}
-| staticColumn total value={math 'sum(count)'}
-| mapColumn percentage fn={math 'round(count/total, 2)'}
+| ply by=customer_gender fn={math 'sum(count)' | as cnt}
+| staticColumn total value={math 'sum(cnt)'}
+| mapColumn percentage fn={math 'round(cnt/total, 2)'}
 | filterrows {getCell "customer_gender" | any {eq "MALE"}}
 | math "percentage"
 | revealImage origin="bottom" image={asset "asset-0e2929cc-4f49-42a1-91bc-afee6c56c327"} emptyImage={asset "asset-c3b05f2f-3955-468c-851d-0f904b75062c"}
